@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dice Rolling Game</title>
+<meta name="robots" content="noindex, nofollow" />
+<style>* {
+  padding:0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  padding: 80px 10px 20px;
+  display: flex;
+  place-items: center;
+  flex-direction: column;
+  background-color: #C1D8C3;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+div.dice {
+  perspective: 1000px;
+  perspective-origin: 400px -200px;
+  position: relative;
+  left: 0;
+  height: 200px;
+  top: 100px;
+}
+.cube {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  top: -50px;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+  transition: 2s all ease;
+}
+.cube div {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(to top, #fff, #eee);
+  border: #eee 3px ridge;
+  display: grid;
+  grid-template-columns: repeat(3, calc(100% / 3));
+  grid-template-rows: repeat(3, calc(100% / 3));
+}
+.cube div > span {
+  display: block;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.cube div > span.point::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 15px;
+  height: 15px;
+  background-color: #000;
+  border-radius: 50%;
+}
+.one {
+  transform: translateZ(50px);
+}
+.two {
+  transform: rotateY(180deg) translateZ(100px);
+}
+.three{
+  transform: rotateY(-270deg) translateX(100px);
+  transform-origin: center right;
+}
+.four {
+  transform: rotateY(-90deg) translateX(-100px);
+  transform-origin: center left ;
+}
+.five{
+  transform: rotateX(270deg) translateY(100px);
+  transform-origin: bottom center;
+}
+.six {
+  transform: rotateX(-270deg) translateY(-100px);
+  transform-origin: top center;
+}
+.pagination {
+  margin-top: 150px;
+  display: flex;
+}
+.pagination .role {
+  padding: 8px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 30px;
+  background-color: #CD5C08;
+  border: none;
+  border-bottom: 4px solid #6A9C89;
+  color: #fff;
+  cursor: pointer;
+}
+.pagination .role:active,
+.pagination .role:focus {
+  border-width: 2px;
+  transform: translateY(2px);
+}
+.pagination .role:disabled {
+  color: #ddd;
+  background-color: #130f40;
+}
+.number-choosing {
+  position: relative;
+  border: 2px solid #333;
+  border-radius: 5px;
+  overflow: hidden;
+  padding-right: 25px;
+}
+.pagination .input {
+  display: block;
+  height: 100%;
+  padding: 5px 25px 5px 10px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  font-size: 20px;
+}
+.pagination .number-choosing .plus,
+.pagination .number-choosing .minus {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background-color: #CD5C08;
+  border: none;
+  cursor: pointer;
+}
+.pagination .number-choosing .minus {
+  top: unset;
+  bottom: 0;
+}
+.pagination .number-choosing .plus:hover,
+.pagination .number-choosing .minus:hover {
+  background-color: #ddd;
+}
+.pagination .number-choosing .plus::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border: 5px solid;
+  border-color: transparent transparent #000 ;
+}
+.pagination .number-choosing .minus::before {
+  content: '';
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border: 5px solid;
+  border-color: #000 transparent transparent ;
+}
+.pagination .input::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  appearance: none;
+}
+.pagination .text {
+  line-height: 54px;
+  font-size: 25px;
+}
+.result {
+  margin-top: 20px;
+  padding: 15px 50px;
+  background-color: #fff;
+  border-radius: 10px;
+  font-size: 18px;
+  border: 2px solid #eee;
+}
+.result .message {
+  margin-bottom: 5px;
+}</style></head>
+<body>
+<div class="dice">
+<div class="cube">
+<div class="one">
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</div>
+<div class="two">
+<span></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span></span>
+</div>
+<div class="three">
+<span></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span></span>
+</div>
+<div class="four">
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+</div>
+<div class="five">
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+</div>
+<div class="six">
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+<span class="point"></span>
+<span></span>
+<span class="point"></span>
+</div>
+</div>
+</div>
+<div class="pagination">
+<button class="role">Roll</button>
+<div class="text">Choose a Number:</div> 
+<div class="number-choosing">
+<input type="number" class="input" min="1" max="6" value="1" />
+<button class="plus"></butt>
+<button class="minus"></butt>
+</div>
+</div>
+<div class="result">
+<div class="message"></div>
+<div class="choose"></div>
+</div>
+<script>const dice = document.querySelector(".dice"); // dice ibject
+const cube = document.querySelector(".cube"); // dice body
+const btn = document.querySelector(".role"); // button of rolling
+const rollVal = document.querySelector(".input"); // input of prediected number
+const iVal = document.querySelector(".plus"); // button of increasing value in input
+const dVal = document.querySelector(".minus"); // button of decreasing value in input
+const choice = document.querySelector(".result .choose"); // the message of details about the choice and result
+const message = document.querySelector(".result .message"); // message of prediction
+
+// variable used
+let animationCount = 12;
+
+
+// increasing value of input field on clicking
+iVal.onclick = function() {
+  if (rollVal.value < parseInt(rollVal.getAttribute("max")))
+    rollVal.value++;
+}
+dVal.onclick = function() {
+  if (rollVal.value > parseInt(rollVal.getAttribute("min")))
+    rollVal.value--;
+}
+rollVal.onblur = function () {
+  if (this.value > 6) {
+    this.value = 6;
+  }
+  if (this.value < 1) {
+    this.value = 1;
+  }
+}
+
+// Events Will occuars when pressing roll
+document.onkeyup = function(e) {
+  if (e.key === "Enter") btn.click();
+  if (e.key === "ArrowUp") iVal.click();
+  if (e.key === "ArrowDown") dVal.click();
+}
+btn.addEventListener('click', function() {
+  gameStart();
+});
+
+
+function gamePreparation() {
+  rollVal.setAttribute("disabled", "disabled");
+  btn.setAttribute("disabled", "disabled");
+  iVal.setAttribute("disabled", "disabled");
+  dVal.setAttribute("disabled", "disabled");
+  choice.innerHTML = "";
+  message.innerHTML = "";
+}
+function gameStart() {
+
+  gamePreparation();
+
+  // making random numbers in rotational directions
+  let randDegX = Math.trunc(Math.random() * 4 + 1);
+  let randDegY = Math.trunc(Math.random() * 4 + 1);
+  let randDegZ = Math.trunc(Math.random() * 4 + 1);
+  cube.style = `transform: rotateX(${animationCount * 90 + randDegX * 90}deg) rotateY(${animationCount * 90 + randDegY * 90}deg) rotateZ(${animationCount * 90 + randDegZ * 90}deg);`;
+
+  // All Values predicted to get
+  let rollingValues = [
+    [
+      [3, 6, 4, 5],
+      [3, 6, 4, 5],
+      [3, 6, 4, 5],
+      [3, 6, 4, 5]
+    ],
+    [
+      [6, 4, 5, 3],
+      [1, 1, 1, 1],
+      [5, 3, 6, 4],
+      [2, 2, 2, 2]
+    ],
+    [
+      [4, 5, 3, 6],
+      [4, 5, 3, 6],
+      [4, 5, 3, 6],
+      [4, 5, 3, 6]
+    ],
+    [
+      [5, 3, 6, 4],
+      [2, 2, 2, 2],
+      [6, 4, 5, 3],
+      [1, 1, 1, 1]
+    ],
+  ];
+
+  // Getting the real value
+  let degX = ((randDegX * 90) / 90) - 1;
+  let degY = ((randDegY * 90) / 90) - 1;
+  let degZ = ((randDegZ * 90) / 90) - 1;
+  let rollingResult = rollingValues[degX][degY][degZ];
+  console.log(rollingResult);
+
+
+  // Events after finition rolling animation
+  setTimeout(() => {
+    document.querySelector(".result .choose").innerHTML = `Your Choice: ${rollVal.value} -- Rolling Value is: ${rollingResult}`;
+    if (rollingResult === +rollVal.value ) {
+      document.querySelector(".result .message").innerHTML = `Fantastic you predicted right 😎`;
+    } else {
+      document.querySelector(".result .message").innerHTML = `Opps! you predicted Wrong 😥`;
+    }
+    rollVal.removeAttribute("disabled");
+    btn.removeAttribute("disabled");
+    iVal.removeAttribute("disabled");
+    dVal.removeAttribute("disabled");
+  }, 2000);
+
+  // increment the rolling for the next press
+  animationCount += 12;
+
+}</script></body>
+
+</html>
